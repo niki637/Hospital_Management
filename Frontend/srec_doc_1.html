@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Details</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(120deg, #f0f4f8 0%, #d9e2ec 100%);
+            color: #334e68;
+            line-height: 1.6;
+        }
+
+        header {
+            background: linear-gradient(135deg, #0c4a6e 0%, #0369a1 100%);
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            animation: slideDown 0.5s ease;
+        }
+
+        header h1 {
+            color: white;
+            font-size: 2.5rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+            display: flex;
+            gap: 2rem;
+            animation: fadeIn 0.8s ease;
+        }
+
+        .doctor-info, .appointment-form {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .doctor-info:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .doctor-info {
+            flex: 1;
+            border-left: 5px solid #0369a1;
+        }
+
+        .doctor-info h2 {
+            color: #0c4a6e;
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .doctor-info p {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            margin-bottom: 1rem;
+            padding: 0.5rem;
+            border-radius: 8px;
+            transition: background-color 0.2s ease;
+        }
+
+        .doctor-info p:hover {
+            background-color: #f8fafc;
+        }
+
+        .doctor-info i {
+            color: #0369a1;
+            font-size: 1.2rem;
+        }
+
+        .appointment-form {
+            flex: 1;
+            border-right: 5px solid #0369a1;
+        }
+
+        .appointment-form h2 {
+            color: #0c4a6e;
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .appointment-form label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #334e68;
+            font-weight: 500;
+        }
+
+        .appointment-form input,
+        .appointment-form textarea {
+            width: 100%;
+            padding: 0.8rem;
+            margin-bottom: 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .appointment-form input:focus,
+        .appointment-form textarea:focus {
+            outline: none;
+            border-color: #0369a1;
+            box-shadow: 0 0 0 3px rgba(3, 105, 161, 0.1);
+        }
+
+        .appointment-form button {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, #0c4a6e 0%, #0369a1 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .appointment-form button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(3, 105, 161, 0.2);
+        }
+
+        .location-icon {
+            cursor: pointer;
+            color: #0369a1;
+            font-size: 1.3rem;
+            transition: transform 0.3s ease, color 0.3s ease;
+        }
+
+        .location-icon:hover {
+            transform: scale(1.2);
+            color: #0c4a6e;
+        }
+
+        footer {
+            background: linear-gradient(135deg, #0c4a6e 0%, #0369a1 100%);
+            color: white;
+            text-align: center;
+            padding: 1rem;
+            position: relative;
+            margin-top: 2rem;
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .rating-stars {
+            color: #f59e0b;
+            display: inline-block;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .doctor-info, .appointment-form {
+                width: 100%;
+            }
+
+            header h1 {
+                font-size: 2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 1rem;
+            }
+
+            header h1 {
+                font-size: 1.8rem;
+            }
+
+            .doctor-info, .appointment-form {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Keep the original HTML structure exactly the same -->
+<header>
+    <h1>Sri Ramakrishna Hospital</h1>
+</header>
+
+<section class="container">
+    <div class="doctor-info" id="doctor-info">
+        <h2 id="doctor-name"></h2>
+        <p><i class="fas fa-user-md"></i> <span id="doctor-department"></span></p>
+        <p><i class="fas fa-envelope"></i> <span id="doctor-email"></span></p>
+        <p><i class="fas fa-phone"></i> <span id="doctor-phone"></span></p>
+        <p>
+            <i class="fas fa-map-marker-alt"></i> 
+            <span id="doctor-address"></span>
+            <i class="fas fa-location-dot location-icon" onclick="viewLocation()"></i>
+        </p>
+        <p><i class="fas fa-star"></i> <span id="doctor-rating" class="rating-stars"></span></p>
+    </div>
+
+    <div class="appointment-form">
+        <h2>Book an Appointment</h2>
+        <form id="appointment-form">
+            <label for="patient-name">Full Name</label>
+            <input type="text" id="patient-name" name="patient-name" required>
+
+            <label for="patient-email">Email Address</label>
+            <input type="email" id="patient-email" name="patient-email" required>
+
+            <label for="patient-phone">Phone Number</label>
+            <input type="tel" id="patient-phone" name="patient-phone" required>
+
+            <label for="appointment-date">Appointment Date</label>
+            <input type="date" id="appointment-date" name="appointment-date" required>
+
+            <label for="patient-location">Location Address</label>
+            <textarea id="patient-location" name="patient-location" rows="3" required></textarea>
+
+            <label for="patient-subject">Subject (Description of Disease)</label>
+            <textarea id="patient-subject" name="patient-subject" rows="3" required></textarea>
+
+            <button type="submit">Book Appointment</button>
+        </form>
+    </div>
+</section>
+
+<footer>
+    <p>&copy; 2025 Sri Ramakrishna Hospital. All rights reserved.</p>
+</footer>
+
+// Replace just the JavaScript section of the previous code with this:
+<script>
+    // Get doctor name from URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const doctorName = urlParams.get('name');
+
+    // Complete doctors data array
+    const doctors = [
+    { name: "Dr.R.Murali", department: "Cardiology", email: "murali.r@hospital.in", phone: "+91 9876543210", address: "123 Gandhipuram, Coimbatore", rating: 4 },
+    { name: "Dr.S.Alagappan", department: "Cardiology", email: "alagappan.s@hospital.in", phone: "+91 9876543211", address: "456 RS Puram, Coimbatore", rating: 5 },
+    { name: "Dr.S.Rajagopal", department: "Cardiology", email: "rajagopal.s@hospital.in", phone: "+91 9876543212", address: "789 Saibaba Colony, Coimbatore", rating: 4 },
+    { name: "Dr.P.Guhan", department: "Neurology", email: "guhan.p@hospital.in", phone: "+91 9876543213", address: "101 Peelamedu, Coimbatore", rating: 5 },
+    { name: "Dr.K.Ashokan", department: "Neurology", email: "ashokan.k@hospital.in", phone: "+91 9876543214", address: "103 Saravanampatti, Coimbatore", rating: 4 },
+    { name: "Dr.S.Manahoran", department: "Neurology", email: "manahoran.s@hospital.in", phone: "+91 9876543215", address: "104 Singanallur, Coimbatore", rating: 5 },
+    { name: "Dr.N.Chezhiyan", department: "Pediatrician", email: "chezhiyan.n@hospital.in", phone: "+91 9876543216", address: "105 Avinashi Road, Coimbatore", rating: 4 },
+    { name: "Dr.V.Sarveshwaran", department: "Pediatrician", email: "sarveshwaran.v@hospital.in", phone: "+91 9876543217", address: "106 Ganapathy, Coimbatore", rating: 5 },
+    { name: "Dr.S.Thiyagaraja Murthy", department: "Pediatrician", email: "thiyagaraja.murthy@hospital.in", phone: "+91 9876543218", address: "107 Vadavalli, Coimbatore", rating: 4 },
+    { name: "Dr.R.Palaniswamy", department: "Orthopedic Surgeon", email: "palaniswamy.r@hospital.in", phone: "+91 9876543219", address: "108 Race Course Road, Coimbatore", rating: 5 },
+        { name: "Dr. Quinn Evans", department: "Orthopedics", email: "quinn.evans@hospital.com", phone: "+1 (678) 901-2345", address: "113 Willow Ln, City", rating: 5 },
+        { name: "Dr. Rachel Adams", department: "Cardiology", email: "rachel.adams@hospital.com", phone: "+1 (789) 012-3456", address: "114 Cedar Dr, City", rating: 5 },
+        { name: "Dr. Sarah Harris", department: "Neurology", email: "sarah.harris@hospital.com", phone: "+1 (890) 123-4567", address: "115 Birch Ave, City", rating: 4 },
+        { name: "Dr. Thomas Cooper", department: "Pediatrics", email: "thomas.cooper@hospital.com", phone: "+1 (901) 234-5678", address: "116 Aspen Rd, City", rating: 4 },
+        { name: "Dr. Victoria King", department: "Orthopedics", email: "victoria.king@hospital.com", phone: "+1 (012) 345-6789", address: "117 Pine Ln, City", rating: 5 },
+        { name: "Dr. William Foster", department: "Neurology", email: "william.foster@hospital.com", phone: "+1 (123) 456-7890", address: "118 Maple Ave, City", rating: 5 },
+        { name: "Dr. Jagatheesh", department: "Neurology", email: "jagatheesh@hospital.com", phone: "+1 (567) 890-1234", address: "202 Maple Ave, City", rating: 5 }
+    ];
+
+    // Find the doctor details from the data
+    const doctor = doctors.find(d => d.name === doctorName);
+
+    if (doctor) {
+        document.getElementById('doctor-name').textContent = doctor.name;
+        document.getElementById('doctor-department').textContent = `Department: ${doctor.department}`;
+        document.getElementById('doctor-email').textContent = `Email: ${doctor.email}`;
+        document.getElementById('doctor-phone').textContent = `Phone: ${doctor.phone}`;
+        document.getElementById('doctor-address').textContent = `Address: ${doctor.address}`;
+        document.getElementById('doctor-rating').textContent = `${'★'.repeat(doctor.rating)}${'☆'.repeat(5 - doctor.rating)}`;
+    } else {
+        alert("Doctor not found!");
+    }
+
+    // View location function
+    function viewLocation() {
+        if (doctor) {
+            const address = encodeURIComponent(doctor.address);
+            window.open(`https://www.google.com/maps/search/?api=1&query=${address}`, '_blank');
+        }
+    }
+
+    // Appointment form submission
+    document.getElementById("appointment-form").addEventListener("submit", function (event) {
+        event.preventDefault();
+
+        const appointment = {
+            doctorName: doctor.name,
+            department: doctor.department,
+            patientName: document.getElementById("patient-name").value,
+            patientEmail: document.getElementById("patient-email").value,
+            patientPhone: document.getElementById("patient-phone").value,
+            appointmentDate: document.getElementById("appointment-date").value,
+            patientLocation: document.getElementById("patient-location").value,
+            patientSubject: document.getElementById("patient-subject").value,
+        };
+
+        const appointments = JSON.parse(localStorage.getItem("appointments")) || [];
+        appointments.push(appointment);
+        localStorage.setItem("appointments", JSON.stringify(appointments));
+
+        alert("Appointment booked successfully!");
+        this.reset();
+    });
+</script>
+
+</body>
+</html>

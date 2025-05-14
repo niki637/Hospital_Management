@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Medicine Inventory</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+      }
+
+      @keyframes slideDown {
+        from { transform: translateY(-20px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+      }
+
+      @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+        100% { transform: scale(1); }
+      }
+
+      body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #f0f4ff 0%, #ffffff 100%);
+        margin: 0;
+        padding: 0;
+        min-height: 100vh;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+        animation: fadeIn 0.8s ease-out;
+      }
+
+      h1, h2 {
+        text-align: center;
+        color: #2c5282;
+        margin: 30px 0;
+        font-size: 2.5rem;
+        font-weight: 700;
+        text-transform: none;
+        animation: slideDown 0.8s ease-out;
+        position: relative;
+      }
+
+      h1::after {
+        content: '';
+        display: block;
+        width: 100px;
+        height: 4px;
+        background: linear-gradient(90deg, #3182ce, #63b3ed);
+        margin: 10px auto;
+        border-radius: 2px;
+      }
+
+      .location-icon {
+        position: absolute;
+        top: -30px;
+        right: 20px;
+        font-size: 24px;
+        color: #3182ce;
+        cursor: pointer;
+        transition: transform 0.3s ease;
+      }
+
+      .location-icon:hover {
+        transform: scale(1.1);
+      }
+
+      #search {
+        margin: 30px auto;
+        text-align: center;
+        position: relative;
+        max-width: 600px;
+      }
+
+      #search input {
+        width: 100%;
+        padding: 15px 20px 15px 45px;
+        font-size: 1rem;
+        border: 2px solid #e2e8f0;
+        border-radius: 50px;
+        background-color: white;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+      }
+
+      #search input:focus {
+        outline: none;
+        border-color: #3182ce;
+        box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.2);
+      }
+
+      #search::before {
+        content: '\f002';
+        font-family: 'Font Awesome 6 Free';
+        font-weight: 900;
+        position: absolute;
+        left: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #718096;
+      }
+
+      table {
+        width: 100%;
+        margin: 20px auto;
+        border-collapse: separate;
+        border-spacing: 0;
+        background: white;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        animation: fadeIn 1s ease-out;
+      }
+
+      th {
+        background: linear-gradient(90deg, #2c5282, #3182ce);
+        color: white;
+        padding: 15px;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.9rem;
+        letter-spacing: 0.5px;
+      }
+
+      td {
+        padding: 15px;
+        border-bottom: 1px solid #e2e8f0;
+        color: #4a5568;
+        transition: background-color 0.3s ease;
+      }
+
+      tr:hover td {
+        background-color: #f7fafc;
+      }
+
+      tr:last-child td {
+        border-bottom: none;
+      }
+
+      button {
+        padding: 8px 16px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 0.9rem;
+      }
+
+      button i {
+        font-size: 1rem;
+      }
+
+      button.primary {
+        background: #3182ce;
+        color: white;
+      }
+
+      button.primary:hover {
+        background: #2c5282;
+        transform: translateY(-1px);
+      }
+
+      button.secondary {
+        background: #e2e8f0;
+        color: #4a5568;
+      }
+
+      button.secondary:hover {
+        background: #cbd5e0;
+        transform: translateY(-1px);
+      }
+
+      #pagination {
+        margin: 30px 0;
+        text-align: center;
+      }
+
+      #pagination button {
+        margin: 0 5px;
+        min-width: 100px;
+      }
+
+      #page-info {
+        margin: 0 15px;
+        padding: 8px 16px;
+        background: #e2e8f0;
+        border-radius: 5px;
+        color: #4a5568;
+      }
+
+      #bill {
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        margin: 20px 0;
+      }
+
+      #bill p {
+        padding: 10px;
+        border-bottom: 1px solid #e2e8f0;
+        color: #4a5568;
+      }
+
+      #bill p:last-child {
+        border-bottom: none;
+      }
+
+      .popup {
+        background: white;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        animation: fadeIn 0.3s ease-out;
+        width: 90%;
+        max-width: 600px;
+      }
+
+      .popup h3 {
+        color: #2c5282;
+        margin-bottom: 20px;
+        font-size: 1.5rem;
+      }
+
+      .popup .close {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        font-size: 1.5rem;
+        color: #718096;
+        cursor: pointer;
+        transition: color 0.3s ease;
+      }
+
+      .popup .close:hover {
+        color: #4a5568;
+      }
+
+      .overlay {
+        background: rgba(0, 0, 0, 0.7);
+        backdrop-filter: blur(3px);
+        animation: fadeIn 0.3s ease-out;
+      }
+
+      .action-buttons {
+        display: flex;
+        gap: 10px;
+        justify-content: flex-end;
+        margin-top: 20px;
+      }
+
+      @media (max-width: 768px) {
+        .container {
+          padding: 10px;
+        }
+
+        table {
+          font-size: 0.9rem;
+        }
+
+        button {
+          padding: 6px 12px;
+          font-size: 0.8rem;
+        }
+
+        #search input {
+          padding: 12px 20px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>
+        Medicine Inventory
+      </h1>
+
+      <div id="search">
+        <input
+          type="text"
+          id="search-box"
+          placeholder="Search for medicines..."
+          onkeyup="searchMedicine()"
+        />
+      </div>
+
+      <section id="inventory-section">
+        <table id="inventory-table">
+          <thead>
+            <tr>
+              <th>Medicine Name</th>
+              <th>Quantity</th>
+              <th>Price</th>
+              <th>Expiry Date</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Rows dynamically populated -->
+          </tbody>
+        </table>
+        <div id="pagination">
+          <button id="prev" onclick="changePage(-1)" class="secondary">
+            <i class="fas fa-chevron-left"></i> Previous
+          </button>
+          <span id="page-info"></span>
+          <button id="next" onclick="changePage(1)" class="secondary">
+            Next <i class="fas fa-chevron-right"></i>
+          </button>
+        </div>
+      </section>
+
+      <h2>Bill</h2>
+      <div id="bill"></div>
+      <div class="action-buttons">
+        <button onclick="generateBill()" class="primary">
+          <i class="fas fa-file-invoice"></i> Generate Bill
+        </button>
+        <button onclick="clearBill()" class="secondary">
+          <i class="fas fa-trash"></i> Clear Bill
+        </button>
+      </div>
+    </div>
+
+    <div class="overlay" id="overlay"></div>
+    <div class="popup" id="popup">
+      <span class="close" onclick="closePopup()">×</span>
+      <h3>Bill Details</h3>
+      <div id="popup-content"></div>
+      <button onclick="printPopup()" class="primary">
+        <i class="fas fa-print"></i> Print
+      </button>
+    </div>
+
+    <script>
+      // Your existing JavaScript code remains unchanged
+      let currentPage = 1;
+      let bill = [];
+
+      async function fetchInventory(page = 1) {
+        const response = await fetch(`/api/medicines?page=${page}`);
+        const data = await response.json();
+        const tableBody = document.querySelector("#inventory-table tbody");
+        const pageInfo = document.querySelector("#page-info");
+
+        tableBody.innerHTML = "";
+        data.medicines.forEach((medicine) => {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+            <td>${medicine.name}</td>
+            <td>${medicine.quantity}</td>
+            <td>${medicine.price}</td>
+            <td>${medicine.expiryDate}</td>
+            <td>
+              <button onclick="addToBill('${medicine._id}', '${medicine.name}', ${medicine.price}, ${medicine.quantity})" class="primary">
+                <i class="fas fa-plus"></i> Add to Bill
+              </button>
+              <button onclick="updateQuantity('${medicine._id}', ${medicine.quantity})" class="secondary">
+                <i class="fas fa-sync"></i> Update
+              </button>
+            </td>
+          `;
+          tableBody.appendChild(row);
+        });
+
+        currentPage = data.currentPage;
+        pageInfo.textContent = `Page ${data.currentPage} of ${data.totalPages}`;
+        document.getElementById("prev").disabled = currentPage === 1;
+        document.getElementById("next").disabled = currentPage === data.totalPages;
+      }
+
+      function changePage(direction) {
+        fetchInventory(currentPage + direction);
+      }
+
+      function addToBill(id, name, price, availableQuantity) {
+        const quantity = prompt(
+          `Enter quantity for ${name} (Available: ${availableQuantity}):`
+        );
+        if (quantity > 0 && quantity <= availableQuantity) {
+          bill.push({ id, name, quantity, price });
+          document.querySelector(
+            "#bill"
+          ).innerHTML += `<p>${name} - ${quantity} x ${price} = ${
+            quantity * price
+          }</p>`;
+        } else alert("Invalid quantity!");
+      }
+
+      function clearBill() {
+        bill = [];
+        document.querySelector("#bill").innerHTML = "";
+        alert("Bill cleared!");
+      }
+
+      async function generateBill() {
+  const popup = document.getElementById("popup");
+  const overlay = document.getElementById("overlay");
+  const popupContent = document.getElementById("popup-content");
+
+  popupContent.innerHTML = bill
+    .map(
+      (item) =>
+        `<p>${item.name} - ${item.quantity} x ${item.price} = ${
+          item.quantity * item.price
+        }</p>`
+    )
+    .join("");
+
+  const total = bill.reduce(
+    (sum, item) => sum + item.quantity * item.price,
+    0
+  );
+  popupContent.innerHTML += `<p class="total">Total: ${total}</p>`;
+  popup.style.display = "block";
+  overlay.style.display = "block";
+
+  const response = await fetch("/api/update-inventory", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(bill.map((item) => ({ id: item.id, quantity: item.quantity }))),
+  });
+
+  if (response.ok) {
+    alert("Inventory updated successfully!");
+    bill.forEach(async (item) => {
+      // Notify if stock is below 10
+      const notifyResponse = await fetch("/api/notify", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ medicineName: item.name }),
+      });
+      if (notifyResponse.ok) {
+        console.log(`Notification sent for low stock of ${item.name}.`);
+      }
+    });
+    bill = [];
+    document.querySelector("#bill").innerHTML = "";
+    fetchInventory(currentPage);
+  } else {
+    alert("Error updating inventory!");
+  }
+}
+
+      function closePopup() {
+        document.getElementById("popup").style.display = "none";
+        document.getElementById("overlay").style.display = "none";
+      }
+
+      function printPopup() {
+        const printContent = document.getElementById("popup-content").innerHTML;
+        const printWindow = window.open("", "", "width=800,height=600");
+        printWindow.document.write("<html><body>" + printContent + "</body></html>");
+        printWindow.document.close();
+        printWindow.print();
+      }
+
+      async function updateQuantity(id, currentQuantity) {
+        const newQuantity = prompt(
+          `Enter new quantity for this medicine (Current: ${currentQuantity}):`
+        );
+        if (newQuantity !== null && !isNaN(newQuantity) && newQuantity >= 0) {
+          await fetch("/api/update-inventory", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify([{ id, quantity: -newQuantity }]),
+          });
+          alert("Quantity updated successfully!");
+          fetchInventory(currentPage);
+        } else {
+          alert("Invalid quantity entered! Please enter a non-negative number.");
+        }
+      }
+
+      function searchMedicine() {
+        const query = document.getElementById("search-box").value.toLowerCase();
+        const rows = document.querySelectorAll("#inventory-table tbody tr");
+
+        rows.forEach((row) => {
+          const medicineName = row.cells[0].textContent.toLowerCase();
+          if (medicineName.includes(query)) {
+            row.style.display = "";
+          } else {
+            row.style.display = "none";
+          }
+        });
+      }
+
+      fetchInventory();
+    </script>
+  </body>
+</html>
